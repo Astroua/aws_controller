@@ -11,7 +11,7 @@ or
 OR try using the newest version, boto3:
 `pip install boto3`
 
-The conversion between the two is given here: `http://boto3.readthedocs.org/en/latest/guide/migrations3.html`__.
+The conversion between the two is given [here](http://boto3.readthedocs.org/en/latest/guide/migrations3.html).
 
 awscli
 ------
