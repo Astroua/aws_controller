@@ -5,11 +5,12 @@ import os
 
 
 def launch(key_name, region='us-west-2', image_id='ami-5189a661',
-           instance_type='t2.micro', kwargs={}):
+           instance_type='t2.micro', install_packages=False, kwargs={}):
     '''
     '''
 
-    myuserdata = user_data(**kwargs)
+    if install_packages:
+        myuserdata = user_data(**kwargs)
 
     ec2 = boto.ec2.connect_to_region(region)
 
