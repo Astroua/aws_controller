@@ -11,6 +11,8 @@ def launch(key_name, region='us-west-2', image_id='ami-5189a661',
 
     if install_packages:
         myuserdata = user_data(**kwargs)
+    else:
+        myuserdata = None
 
     ec2 = boto.ec2.connect_to_region(region)
 
