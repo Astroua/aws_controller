@@ -64,6 +64,9 @@ def user_data(install_casa=True, install_miniconda=False,
                           "Run flask on controller instance and casa on "
                           "computing (slave) instances.")
 
+    # The submodule requires some fiddling around, as it is setup to use SSH
+    # keys. The extra lines allow use of https instead.
+    # http://stackoverflow.com/questions/15674064/github-submodule-access-rights-travis-ci
     run_script = \
         """
         #!/bin/bash
