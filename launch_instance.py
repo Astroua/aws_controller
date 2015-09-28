@@ -1,6 +1,6 @@
 # License under the MIT License - see LICENSE
 
-import boto
+import boto.ec2
 import os
 
 
