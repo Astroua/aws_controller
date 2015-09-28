@@ -72,7 +72,6 @@ def user_data(install_casa=True, install_miniconda=False,
         cd $HOME
 
         mkdir code
-        sudo chown ubuntu:ubuntu code
 
         cd $HOME/code
 
@@ -83,6 +82,7 @@ def user_data(install_casa=True, install_miniconda=False,
         git submodule update --init --recursive
 
         cd $HOME
+        sudo chown -R ubuntu:ubuntu code
 
         sh $HOME/aws_controller/casa-deploy/general-install.sh
         """
