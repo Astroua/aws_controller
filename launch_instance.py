@@ -25,7 +25,7 @@ def launch(key_name, region='us-west-2', image_id='ami-5189a661',
 
 
 def user_data(install_casa=True, install_miniconda=False,
-              start_flask=False, start_casa=False):
+              start_flask=False, start_casa=False, casa_version="4.3"):
     '''
     Return a string to be used as the startup script in an instance.
 
@@ -40,7 +40,12 @@ def user_data(install_casa=True, install_miniconda=False,
         Start the flask server. NOT YET IMPLEMENTED
     start_casa : bool, optional
         Start a CASA session. NOT YET IMPLEMENTED
+    casa_version : str {4.3}, optional
+        Version of CASA to install. Currently only 4.3 is supported.
     '''
+
+    if casa_version != "4.3":
+        raise TypeError("Only CASA 4.3 is currently supported.")
 
     if start_flask & start_casa:
         raise UserWarning("Cannot run flask and casa on same instance. "
