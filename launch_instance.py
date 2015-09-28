@@ -89,7 +89,7 @@ def user_data(install_casa=True, install_miniconda=False,
         cd $HOME
         sudo chown -R ubuntu:ubuntu code
 
-        sh $HOME/aws_controller/casa-deploy/general-install.sh
+        sh $HOME/code/aws_controller/casa-deploy/general-install.sh
         """
 
     if install_casa:
