@@ -2,6 +2,7 @@
 
 import boto.ec2
 import os
+import time
 
 
 def launch(key_name, region='us-west-2', image_id='ami-5189a661',
@@ -20,10 +21,15 @@ def launch(key_name, region='us-west-2', image_id='ami-5189a661',
 
     ec2 = boto.ec2.connect_to_region(region)
 
-    ec2.run_instances(image_id, key_name=key_name, instance_type=instance_type,
-                      user_data=myuserdata, group_names=group_names)
+    inst = ec2.run_instances(image_id, key_name=key_name,
+                             instance_type=instance_type,
+                             user_data=myuserdata, group_names=group_names)
 
-    return ec2
+    while inst.state == u'pending':
+        time.sleep(10)
+        inst.update()
+
+    return inst
 
     # ec2.get_instance_attribute('i-336b69f6', 'instanceType')
 
