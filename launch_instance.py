@@ -28,6 +28,18 @@ def user_data(install_casa=True, install_miniconda=False,
               start_flask=False, start_casa=False):
     '''
     Return a string to be used as the startup script in an instance.
+
+    Parameters
+    ----------
+    install_casa : bool, optional
+        Install CASA on the VM.
+    install_miniconda : bool, optional
+        Installs a miniconda environment on the VM. Needed to run the
+        web-server.
+    start_flask : bool, optional
+        Start the flask server. NOT YET IMPLEMENTED
+    start_casa : bool, optional
+        Start a CASA session. NOT YET IMPLEMENTED
     '''
 
     if start_flask & start_casa:
