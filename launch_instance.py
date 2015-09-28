@@ -71,8 +71,8 @@ def user_data(install_casa=True, install_miniconda=False,
         """
         #!/bin/bash
 
-        sudo apt-get update
-        sudo apt-get -y install git
+        apt-get update
+        apt-get -y install git
 
         cd $HOME
 
@@ -87,9 +87,9 @@ def user_data(install_casa=True, install_miniconda=False,
         git submodule update --init --recursive
 
         cd $HOME
-        sudo chown -R ubuntu:ubuntu code
+        chown -R ubuntu:ubuntu code
 
-        sh $HOME/code/aws_controller/casa-deploy/general-install.sh
+        sh $HOME/code/aws_controller/casa-deploy/general_install.sh
         """
 
     if install_casa:
