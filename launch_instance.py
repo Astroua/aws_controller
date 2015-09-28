@@ -72,10 +72,17 @@ def user_data(install_casa=True, install_miniconda=False,
         cd $HOME
 
         mkdir code
+        sudo chown ubuntu:ubuntu code
 
         cd $HOME/code
 
         git clone https://github.com/Astroua/aws_controller.git
+        cd aws_controller
+        sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+        sed -i 's/git@github.com:/https:\/\/github.com\//' .git/config
+        git submodule update --init --recursive
+
+        cd $HOME
 
         sh $HOME/aws_controller/casa-deploy/general-install.sh
         """
