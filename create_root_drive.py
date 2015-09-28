@@ -3,7 +3,7 @@
 
 import boto
 
-from .launch_instance import launch
+from launch_instance import launch
 
 
 def create_root_drive(name, region='us-west-2', key_name='admin_root_maker',
