@@ -67,7 +67,7 @@ def user_data(install_casa=True, install_miniconda=False,
         #!/bin/bash
 
         sudo apt-get update
-        sudo apt-get install git
+        sudo apt-get -y install git
 
         cd $HOME
 
