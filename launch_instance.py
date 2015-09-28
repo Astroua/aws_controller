@@ -78,9 +78,9 @@ def user_data(install_casa=True, install_miniconda=False,
         run_script = run_script + \
             "sh $HOME/aws_controller/casa-deploy/deploy_casa4.3.sh\n"
         run_script = run_script + \
-            "sh $HOME/aws_controller/casa-deploy/install_casa_pip.sh"
+            "sh $HOME/aws_controller/casa-deploy/install_casa_pip.sh\n"
         run_script = run_script + \
-            "sh $HOME/aws_controller/casa-deploy/install_casa_packages.sh"
+            "sh $HOME/aws_controller/casa-deploy/install_casa_packages.sh\n"
 
     if install_miniconda:
         run_script = run_script + \
