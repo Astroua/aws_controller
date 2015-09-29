@@ -35,7 +35,7 @@ def create_root_drive(name, path_to_key, region='us-west-2',
 def install_packages(instance, path_to_key, install_casa=True,
                      install_miniconda=False,
                      casa_version="4.3", user_name='ubuntu',
-                     debug=True, verbose=True):
+                     debug=False, verbose=True):
     '''
     Install packages in a running instance.
 
@@ -74,16 +74,12 @@ def install_packages(instance, path_to_key, install_casa=True,
 
     if install_casa:
         casa_install_script = "deploy_casa"+str(casa_version)+".sh"
-        run_script = run_script + \
-            "sh $HOME/aws_controller/casa-deploy/"+casa_install_script
-        run_script = run_script + \
-            "sh $HOME/aws_controller/casa-deploy/install_casa_pip.sh"
-        run_script = run_script + \
-            "sh $HOME/aws_controller/casa-deploy/install_casa_packages.sh"
+        run_script.append("sh $HOME/aws_controller/casa-deploy/"+casa_install_script)
+        run_script.append("sh $HOME/aws_controller/casa-deploy/install_casa_pip.sh")
+        run_script.append("sh $HOME/aws_controller/casa-deploy/install_casa_packages.sh")
 
     if install_miniconda:
-        run_script = run_script + \
-            "sh $HOME/aws_controller/casa-deploy/install_miniconda.sh"
+        run_script.append("sh $HOME/aws_controller/casa-deploy/install_miniconda.sh")
 
     # Start-up the SSH connection
     ssh_shell = sshclient_from_instance(instance, path_to_key,
