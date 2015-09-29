@@ -10,25 +10,32 @@ from launch_instance import launch
 def create_root_drive(name, path_to_key, region='us-west-2',
                       key_name='admin_root_maker',
                       orig_image_id="ami-5189a661",
-                      install_kwargs={}):
+                      install_kwargs={},
+                      verbose=True):
     '''
     Creates the root drive for AstroCompute instances.
     '''
 
     instance = launch(key_name, region=region, image_id=orig_image_id)
 
+    if verbose:
+        print("Instance status: " + str(instance.state))
+
     try:
-        install_packages(instance, path_to_key, **install_kwargs)
+        install_packages(instance, path_to_key, verbose=verbose,
+                         **install_kwargs)
     except Exception, e:
         warnings.warn("Something went wrong. Terminating instance.")
         instance.terminate()
         raise e
 
+    return instance
+
 
 def install_packages(instance, path_to_key, install_casa=True,
                      install_miniconda=False,
                      casa_version="4.3", user_name='ubuntu',
-                     debug=False):
+                     debug=True, verbose=True):
     '''
     Install packages in a running instance.
 
@@ -58,14 +65,12 @@ def install_packages(instance, path_to_key, install_casa=True,
     # The submodule requires some fiddling around, as it is setup to use SSH
     # keys. The extra lines allow use of https instead.
     # http://stackoverflow.com/questions/15674064/github-submodule-access-rights-travis-ci
-    run_script = ["apt-get update", "apt-get -y install git", "cd $HOME",
+    run_script = ["sudo apt-get update", "sudo apt-get -y install git",
                   "git clone https://github.com/Astroua/aws_controller.git",
-                  "cd aws_controller",
-                  "sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules",
-                  "sed -i 's/git@github.com:/https:\/\/github.com\//' .git/config",
-                  "git submodule update --init --recursive",
-                  "cd $HOME",
-                  "sh $HOME/code/aws_controller/casa-deploy/general_install.sh"]
+                  "sed -i 's/git@github.com:/https:\/\/github.com\//' $HOME/aws_controller/.gitmodules",
+                  "sed -i 's/git@github.com:/https:\/\/github.com\//' $HOME/aws_controller/.git/config",
+                  "git -C $HOME/aws_controller submodule update --init --recursive --force",
+                  "sh $HOME/aws_controller/casa-deploy/general_install.sh"]
 
     if install_casa:
         casa_install_script = "deploy_casa"+str(casa_version)+".sh"
@@ -88,8 +93,14 @@ def install_packages(instance, path_to_key, install_casa=True,
         ssh_shell.shell()
 
     for cmd in run_script:
-        try:
-            ssh_shell.run(cmd)
-        except Exception, e:
-            raise e("Failed on " + cmd)
+        status, stdout, stderr = ssh_shell.run(cmd)
+
+        if verbose:
+            print("Status: " + str(status))
+            print("Out: " + str(stdout))
+            print("Error: " + str(stderr))
+
+        if status != 0:
+            print(stderr)
+            raise Exception("Failed on " + cmd)
             break
