@@ -48,14 +48,14 @@ def install_packages(instance, path_to_key, install_casa=True,
     # The submodule requires some fiddling around, as it is setup to use SSH
     # keys. The extra lines allow use of https instead.
     # http://stackoverflow.com/questions/15674064/github-submodule-access-rights-travis-ci
-    run_script =["apt-get update", "apt-get -y install git", "cd $HOME",
-                 "git clone https://github.com/Astroua/aws_controller.git",
-                 "cd aws_controller",
-                 "sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules",
-                 "sed -i 's/git@github.com:/https:\/\/github.com\//' .git/config",
-                 "git submodule update --init --recursive",
-                 "cd $HOME",
-                 "sh $HOME/code/aws_controller/casa-deploy/general_install.sh"]
+    run_script = ["apt-get update", "apt-get -y install git", "cd $HOME",
+                  "git clone https://github.com/Astroua/aws_controller.git",
+                  "cd aws_controller",
+                  "sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules",
+                  "sed -i 's/git@github.com:/https:\/\/github.com\//' .git/config",
+                  "git submodule update --init --recursive",
+                  "cd $HOME",
+                  "sh $HOME/code/aws_controller/casa-deploy/general_install.sh"]
 
     if install_casa:
         casa_install_script = "deploy_casa"+str(casa_version)+".sh"
