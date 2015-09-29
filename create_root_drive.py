@@ -2,6 +2,7 @@
 
 
 from boto.manage.cmdshell import sshclient_from_instance
+import warnings
 
 from launch_instance import launch
 
@@ -16,7 +17,12 @@ def create_root_drive(name, path_to_key, region='us-west-2',
 
     instance = launch(key_name, region=region, image_id=orig_image_id)
 
-    install_packages(instance, path_to_key, **install_kwargs)
+    try:
+        install_packages(instance, path_to_key, **install_kwargs)
+    except Exception, e:
+        warnings.warn("Something went wrong. Terminating instance.")
+        instance.terminate()
+        raise e
 
 
 def install_packages(instance, path_to_key, install_casa=True,
