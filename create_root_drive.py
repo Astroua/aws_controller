@@ -79,3 +79,4 @@ def install_packages(instance, path_to_key, install_casa=True,
             ssh_shell.run(cmd)
         except Exception, e:
             raise e
+            break
