@@ -78,5 +78,5 @@ def install_packages(instance, path_to_key, install_casa=True,
         try:
             ssh_shell.run(cmd)
         except Exception, e:
-            raise e
+            raise e("Failed on " + cmd)
             break
