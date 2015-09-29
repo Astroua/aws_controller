@@ -155,4 +155,4 @@ if __name__ == "__main__":
     if install_miniconda and install_casa:
         name = "AstroCompute_UA_all"
 
-    create_root_drive(name, path_to_key)
+    create_root_drive(name, path_to_key, install_kwargs=install_kwargs)
