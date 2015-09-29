@@ -3,7 +3,7 @@
 
 from boto.manage.cmdshell import sshclient_from_instance
 import warnings
-import datetime
+from datetime import datetime
 
 from launch_instance import launch
 
