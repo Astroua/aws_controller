@@ -15,7 +15,6 @@ def timestring():
 
 def create_root_drive(name, path_to_key, image_description=None,
                       region='us-west-2',
-                      key_name='admin_root_maker',
                       orig_image_id="ami-5189a661",
                       install_kwargs={},
                       verbose=True,
@@ -26,6 +25,8 @@ def create_root_drive(name, path_to_key, image_description=None,
     Parameters
     ----------
     '''
+
+    key_name = path_to_key.split("/")[-1].rstrip(".pem")
 
     name += "_"+timestring()
 
