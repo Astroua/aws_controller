@@ -22,6 +22,9 @@ def create_root_drive(name, path_to_key, image_description=None,
                       auto_terminate=True):
     '''
     Creates the root drive for AstroCompute instances.
+
+    Parameters
+    ----------
     '''
 
     instance = launch(key_name, region=region, image_id=orig_image_id)
@@ -97,6 +100,7 @@ def install_packages(instance, path_to_key, install_casa=True,
 
     if install_miniconda:
         run_script.append("sh $HOME/aws_controller/casa-deploy/install_miniconda.sh")
+        run_script.append(source_profile + "&& conda update --yes conda")
 
     # Start-up the SSH connection
     ssh_shell = sshclient_from_instance(instance, path_to_key,
