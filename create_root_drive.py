@@ -24,6 +24,25 @@ def create_root_drive(name, path_to_key, image_description=None,
 
     Parameters
     ----------
+    name : str
+        Name of the image. Note that the time will be appended to the name.
+    path_to_key : str
+        Path to the key to link to the VM. Note this key must be attached to
+        you AWS account.
+    image_description : str, optional
+        Description of the created image.
+    region : str, optional
+        Region to create image. orig_image_id must be correct for the region.
+    orig_image_id : str, optional
+        Image ID to base the new image on. This defaults to ubuntu 14.04.
+        Note the ami changes with the chosen region.
+    install_kwargs : dict, optional
+        Passed to install_packages.
+    verbose : bool, optional
+        Enables output of the process.
+    auto_terminate : bool, optional
+        When enabled, terminates the instance after the image has been
+        created.
     '''
 
     key_name = path_to_key.split("/")[-1].rstrip(".pem")
