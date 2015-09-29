@@ -27,6 +27,8 @@ def create_root_drive(name, path_to_key, image_description=None,
     ----------
     '''
 
+    name += "_"+timestring()
+
     instance = launch(key_name, region=region, image_id=orig_image_id)
 
     if verbose:
