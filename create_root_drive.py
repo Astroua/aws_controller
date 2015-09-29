@@ -62,7 +62,9 @@ def create_root_drive(name, path_to_key, image_description=None,
         instance.terminate()
         raise e
 
-    instance.create_image(name, description=image_description)
+    instance.stop()
+
+    instance.create_image(name, description=image_description, no_reboot=True)
 
     if not auto_terminate:
         return instance
