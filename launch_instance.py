@@ -25,6 +25,9 @@ def launch(key_name, region='us-west-2', image_id='ami-5189a661',
         time.sleep(10)
         inst.update()
 
+    # Let's wait a few seconds to make sure it's actually running
+    time.sleep(30)
+
     return inst
 
     # ec2.get_instance_attribute('i-336b69f6', 'instanceType')
