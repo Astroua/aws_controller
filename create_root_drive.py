@@ -73,3 +73,9 @@ def install_packages(instance, path_to_key, install_casa=True,
     # Start-up the SSH connection
     ssh_shell = sshclient_from_instance(instance, path_to_key,
                                         user_name=user_name)
+
+    for cmd in run_script:
+        try:
+            ssh_shell.run(cmd)
+        except Exception, e:
+            raise e
