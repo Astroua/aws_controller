@@ -6,17 +6,17 @@ from boto.manage.cmdshell import sshclient_from_instance
 from launch_instance import launch
 
 
-def create_root_drive(name, region='us-west-2', key_name='admin_root_maker',
-                      orig_image_id="ami-5189a661"):
+def create_root_drive(name, path_to_key, region='us-west-2',
+                      key_name='admin_root_maker',
+                      orig_image_id="ami-5189a661",
+                      install_kwargs={}):
     '''
     Creates the root drive for AstroCompute instances.
     '''
 
-    kwargs = {"install_casa": True,
-              "install_miniconda": True}
+    instance = launch(key_name, region=region, image_id=orig_image_id)
 
-    instance = launch(key_name, region=region, image_id=orig_image_id,
-                      install_packages=True, kwargs=kwargs)
+    install_packages(instance, path_to_key, **install_kwargs)
 
 
 def install_packages(instance, path_to_key, install_casa=True,
