@@ -123,3 +123,35 @@ def install_packages(instance, path_to_key, install_casa=True,
             print(stderr)
             raise Exception("Failed on " + cmd)
             break
+
+if __name__ == "__main__":
+
+    import sys
+
+    # Call sequence
+    # python create_root_drive.py install_casa install_miniconda path_to_key
+    # So to create a CASA image:
+    # python create_root_drive.py True False /path/to/key.pem
+
+    install_casa = True if sys.argv[1] == "True" else False
+    install_miniconda = True if sys.argv[2] == "True" else False
+    path_to_key = sys.argv[3]
+
+    if not install_casa and not install_miniconda:
+        raise TypeError("Nothing to install! Enable one of CASA or miniconda "
+                        " install options on the cmd line.")
+
+    install_kwargs = {}
+
+    if install_casa:
+        name = "AstroCompute_UA_CASA_4.3"
+        install_kwargs["install_casa"] = True
+
+    if install_miniconda:
+        name = "AstroCompute_UA_webserver"
+        install_kwargs["install_miniconda"] = True
+
+    if install_miniconda and install_casa:
+        name = "AstroCompute_UA_all"
+
+    create_root_drive(name, path_to_key)
