@@ -48,8 +48,7 @@ def install_packages(instance, path_to_key, install_casa=True,
     # The submodule requires some fiddling around, as it is setup to use SSH
     # keys. The extra lines allow use of https instead.
     # http://stackoverflow.com/questions/15674064/github-submodule-access-rights-travis-ci
-    run_script =["apt-get update", "apt-get -y install git", "mkdir code",
-                 "cd $HOME/code",
+    run_script =["apt-get update", "apt-get -y install git", "cd $HOME",
                  "git clone https://github.com/Astroua/aws_controller.git",
                  "cd aws_controller",
                  "sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules",
@@ -61,15 +60,15 @@ def install_packages(instance, path_to_key, install_casa=True,
     if install_casa:
         casa_install_script = "deploy_casa"+str(casa_version)+".sh"
         run_script = run_script + \
-            "sh $HOME/aws_controller/casa-deploy/"+casa_install_script+"\n"
+            "sh $HOME/aws_controller/casa-deploy/"+casa_install_script
         run_script = run_script + \
-            "sh $HOME/aws_controller/casa-deploy/install_casa_pip.sh\n"
+            "sh $HOME/aws_controller/casa-deploy/install_casa_pip.sh"
         run_script = run_script + \
-            "sh $HOME/aws_controller/casa-deploy/install_casa_packages.sh\n"
+            "sh $HOME/aws_controller/casa-deploy/install_casa_packages.sh"
 
     if install_miniconda:
         run_script = run_script + \
-            "sh $HOME/aws_controller/casa-deploy/install_miniconda.sh\n"
+            "sh $HOME/aws_controller/casa-deploy/install_miniconda.sh"
 
     # Start-up the SSH connection
     ssh_shell = sshclient_from_instance(instance, path_to_key,
