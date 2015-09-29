@@ -3,15 +3,23 @@
 
 from boto.manage.cmdshell import sshclient_from_instance
 import warnings
+import datetime
 
 from launch_instance import launch
 
 
-def create_root_drive(name, path_to_key, region='us-west-2',
+def timestring():
+    TimeString = datetime.now().strftime("%Y%m%d%H%M%S%f")
+    return TimeString
+
+
+def create_root_drive(name, path_to_key, image_description=None,
+                      region='us-west-2',
                       key_name='admin_root_maker',
                       orig_image_id="ami-5189a661",
                       install_kwargs={},
-                      verbose=True):
+                      verbose=True,
+                      auto_terminate=True):
     '''
     Creates the root drive for AstroCompute instances.
     '''
@@ -29,7 +37,12 @@ def create_root_drive(name, path_to_key, region='us-west-2',
         instance.terminate()
         raise e
 
-    return instance
+    instance.create_image(name, description=image_description)
+
+    if not auto_terminate:
+        return instance
+    else:
+        instance.terminate()
 
 
 def install_packages(instance, path_to_key, install_casa=True,
