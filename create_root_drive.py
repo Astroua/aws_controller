@@ -27,7 +27,8 @@ def create_root_drive(name, path_to_key, region='us-west-2',
 
 def install_packages(instance, path_to_key, install_casa=True,
                      install_miniconda=False,
-                     casa_version="4.3", user_name='ubuntu'):
+                     casa_version="4.3", user_name='ubuntu',
+                     debug=False):
     '''
     Install packages in a running instance.
 
@@ -46,6 +47,9 @@ def install_packages(instance, path_to_key, install_casa=True,
         web-server.
     casa_version : str {4.3}, optional
         Version of CASA to install. Currently only 4.3 is supported.
+    debug : bool, optional
+        Return an interactive shell to test connection before attempting
+        installation.
     '''
 
     if casa_version != "4.3":
@@ -79,6 +83,9 @@ def install_packages(instance, path_to_key, install_casa=True,
     # Start-up the SSH connection
     ssh_shell = sshclient_from_instance(instance, path_to_key,
                                         user_name=user_name)
+
+    if debug:
+        ssh_shell.shell()
 
     for cmd in run_script:
         try:
