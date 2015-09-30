@@ -122,7 +122,8 @@ def install_packages(instance, path_to_key, install_casa=True,
         run_script.append(source_profile +
                           "&& sh $HOME/aws_controller/casa-deploy/install_casa_packages.sh")
         run_script.append(source_profile +
-                          "&& sh $HOME/aws_controller/casa-deploy/install_uvmultifit.sh")
+                          "&& sh $HOME/aws_controller/casa-deploy/install_uvmultifit.sh "
+                          "$HOME/aws_controller/casa-deploy/external_packages/uvmultifit/")
         run_script.append(source_profile +
                           "&& sh $HOME/aws_controller/casa-deploy/install_casa_analysis_scripts.sh")
 
