@@ -43,9 +43,9 @@ When completed, you should see a new image registered on the AWS EC2 console.
 
 Developers
 ----------
-* [Eric Koch](@e-koch)
-* [Alex Tetarenko](@tetarenk)
-* [Greg Sivakoff](@radioastronomer)
-* [Erik Rosolowsky](@low-sky)
+* Eric Koch [@e-koch](https://github.com/e-koch)
+* Alex Tetarenko [@tetarenk](https://github.com/tetarenk)
+* Greg Sivakoff [@radioastronomer](https://github.com/radioastronomer)
+* Erik Rosolowsky [@low-sky](https://github.com/low-sky)
 
 Support from the SKA AstroCompute Program.
