@@ -143,6 +143,7 @@ def install_packages(instance, path_to_key, install_casa=True,
         status, stdout, stderr = ssh_shell.run(cmd)
 
         if verbose:
+            print("Command: " + cmd)
             print("Status: " + str(status))
             print("Out: " + str(stdout))
             print("Error: " + str(stderr))
