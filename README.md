@@ -11,6 +11,18 @@ Requires
 * paramiko
 * awscli
 
+Launching an instance
+---------------------
+An instance can be launched using the ```launch``` function:
+```
+# Assuming you are in the aws_controller directory
+from launch_instance import launch
+instance = launch("mykey", image_id='ami-00000000',
+                  instance_type='t2.small',
+                  security_groups='default')
+```
+Once it is running, the function returns an instance object, from which you can control it. Or, ssh into it as normal using the same key name provided to launch the instance. **The key must be registered in AWS to work.**
+
 Creating an image
 -----------------
 An image can be created running ```create_root_drive.py``` by importing into a python session:
@@ -26,6 +38,8 @@ python create_root_drive.py True False "/path/to/key.pem"
 ```
 These two calls are equivalent, and will install CASA 4.3 on a new image. By default, the original image is ubuntu 14.04 (ami code from us-west-2 or Oregon region).
 *Note: A timestamp is attached to the image name provided.*
+
+When completed, you should see a new image registered on the AWS EC2 console.
 
 Developers
 ----------
