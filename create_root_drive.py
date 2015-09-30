@@ -121,6 +121,11 @@ def install_packages(instance, path_to_key, install_casa=True,
                           "&& sh $HOME/aws_controller/casa-deploy/install_casa_pip.sh")
         run_script.append(source_profile +
                           "&& sh $HOME/aws_controller/casa-deploy/install_casa_packages.sh")
+        run_script.append(source_profile +
+                          "&& sh $HOME/aws_controller/casa-deploy/install_uvmultifit.sh")
+        run_script.append(source_profile +
+                          "&& sh $HOME/aws_controller/casa-deploy/install_casa_analysis_scripts.sh")
+
 
     if install_miniconda:
         run_script.append("sh $HOME/aws_controller/casa-deploy/install_miniconda.sh")
