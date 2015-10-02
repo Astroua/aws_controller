@@ -113,20 +113,7 @@ def install_packages(instance, path_to_key, install_casa=True,
                   "sh $HOME/aws_controller/casa-deploy/general_install.sh"]
 
     if install_casa:
-        casa_install_script = "deploy_casa"+str(casa_version)+".sh"
-        source_profile = "source .profile"
-        run_script.append(source_profile +
-                          "&& sh $HOME/aws_controller/casa-deploy/"+casa_install_script)
-        run_script.append(source_profile +
-                          "&& sh $HOME/aws_controller/casa-deploy/install_casa_pip.sh")
-        run_script.append(source_profile +
-                          "&& sh $HOME/aws_controller/casa-deploy/install_casa_packages.sh")
-        run_script.append(source_profile +
-                          "&& sh $HOME/aws_controller/casa-deploy/install_uvmultifit.sh "
-                          "$HOME/aws_controller/casa-deploy/external_packages/uvmultifit/")
-        run_script.append(source_profile +
-                          "&& sh $HOME/aws_controller/casa-deploy/install_casa_analysis_scripts.sh")
-
+        run_script.append("sh $HOME/aws_controller/full_casa_install.sh "+ str(casa_version))
 
     if install_miniconda:
         run_script.append("sh $HOME/aws_controller/casa-deploy/install_miniconda.sh")
