@@ -1,7 +1,7 @@
 
 # Install CASA environment and other packages
 
-source .profile
+sh $HOME/.profile
 
 casa_version=${1}
 
