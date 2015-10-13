@@ -10,6 +10,7 @@ Requires
 * boto
 * paramiko
 * awscli
+* FileChunkIO (optional for uploading large files)
 
 Launching an instance
 ---------------------
