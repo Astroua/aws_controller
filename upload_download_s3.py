@@ -16,7 +16,7 @@ except ImportError:
             "files will result in an error.")
 
 
-def upload_to_s3(bucket_name, upload_item, key_metadata={},
+def upload_to_s3(bucket_name, upload_item,
                  create_bucket=False, chunksize=52428800, conn=None,
                  aws_access={}, replace=False):
     '''
