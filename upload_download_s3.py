@@ -21,11 +21,30 @@ def upload_to_s3(bucket_name, upload_item,
                  aws_access={}, replace=False):
     '''
     Upload a file or folder to an S3 bucket. Optionally, a new bucket can be
-    created. For files larger than 50 Mb, downloads are split into chunks.
-    *This requires installing the FileChunkIO library.*
+    created. For files larger than 50 Mb (by default), downloads are split
+    into chunks. *This requires installing the FileChunkIO library.*
 
     Folder uploading is modeled from: https://gist.github.com/SavvyGuard/6115006
 
+    Parameters
+    ----------
+    bucket_name : str
+        Name of existing bucket or one to be created.
+    upload_iterm : str
+        File or folder to be uploaded.
+    create_bucket : bool, optional
+        Set whether to create a new bucket. An error is raised if the bucket
+        already exists.
+    chunksize : int, optional
+        Size of chunks to split a multi-part upload into. Default to 50 Mb.
+    conn : boto.s3.connection.S3Connection, optional
+        A connection to S3. Otherwise, one is created.
+    aws_access : dict, optional
+        Dictionary where AWS_ACCESS_KEY_ID and AWS_ACCESS_KEY_SECRET can be
+        given to open a connection. Not needed if your credentials are set
+        on your machine.
+    replace : bool, optional
+        Allow files to be overwritten if the key already exists.
     '''
 
     # Create S3 connection if none are given.
@@ -124,6 +143,26 @@ def auto_multipart_upload(filename, bucket, key_name, max_size=104857600,
 def download_from_s3(filename, key_name, bucket_name, conn=None,
                      aws_access={}):
     '''
+
+    Download a key from a S3 bucket and save to a given file name.
+
+    **Currently only supports one key at a time. This will be extended
+    to allow for S3 'folders' to be downloaded.**
+
+    Parameters
+    ----------
+    filename : str
+        Name of output file.
+    key_name : str
+        Name of key in S3 bucket.
+    bucket_name : str
+        Name of existing bucket or one to be created.
+    conn : boto.s3.connection.S3Connection, optional
+        A connection to S3. Otherwise, one is created.
+    aws_access : dict, optional
+        Dictionary where AWS_ACCESS_KEY_ID and AWS_ACCESS_KEY_SECRET can be
+        given to open a connection. Not needed if your credentials are set
+        on your machine.
     '''
 
     # Create S3 connection if none are given.
@@ -151,6 +190,15 @@ def download_from_s3(filename, key_name, bucket_name, conn=None,
 def remove_s3_bucket(bucket_name, connection):
     '''
     Delete entire bucket.
+
+    Parameters
+    ----------
+    key_name : str or list
+        Name of key or list of keys in S3 bucket.
+    bucket_name : str
+        Name of existing bucket or one to be created.
+    conn : boto.s3.connection.S3Connection
+        A connection to S3.
     '''
 
     bucket = connection.get_bucket(bucket_name)
@@ -164,6 +212,14 @@ def remove_s3_bucket(bucket_name, connection):
 def remove_s3_key(key_names, bucket_name, connection):
     '''
     Delete a key or a list of keys in a given bucket.
+
+    Parameters
+    ----------
+    bucket_name : str
+        Name of existing bucket or one to be created.
+    conn : boto.s3.connection.S3Connection
+        A connection to S3.
+
     '''
 
     bucket = connection.get_bucket(bucket_name)
