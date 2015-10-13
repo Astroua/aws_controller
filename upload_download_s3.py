@@ -38,7 +38,7 @@ def upload_to_s3(bucket_name, upload_item, key_metadata={},
                            " entries are ignored.")
         else:
             # Use the AWS Keys saved on your machine.
-            conn = s3.connection.S3Connection()
+            conn = S3Connection()
     else:
         if not isinstance(conn, S3Connection):
             raise TypeError("conn provided is not an S3 Connection.")
