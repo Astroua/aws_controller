@@ -114,9 +114,30 @@ def auto_multipart_upload(filename, bucket, key_name, max_size=104857600,
         k.set_contents_from_filename(filename)
 
 
+def download_from_s3(filename, key_name, bucket_name, conn=None, aws_access={}):
+    '''
+    '''
 
-def download_from_s3(bucket_name):
-    pass
+    # Create S3 connection if none are given.
+    if conn is None:
+        if "AWS_ACCESS_KEY_ID" in aws_access.keys() and "AWS_ACCESS_KEY_SECRET" in aws_access.keys():
+            conn = S3Connection(**aws_access)
+        elif len(aws_access.keys()) > 0:
+            raise KeyError("aws_access must contain 'AWS_ACCESS_KEY_ID'"
+                           " and 'AWS_ACCESS_KEY_SECRET'. All other"
+                           " entries are ignored.")
+        else:
+            # Use the AWS Keys saved on your machine.
+            conn = S3Connection()
+    else:
+        if not isinstance(conn, S3Connection):
+            raise TypeError("conn provided is not an S3 Connection.")
+
+    bucket = conn.get_bucket(bucket_name)
+
+    key = bucket.get_key(key_name)
+
+    key.get_contents_to_filename(filename)
 
 
 def remove_s3_bucket(bucket_name, connection):
