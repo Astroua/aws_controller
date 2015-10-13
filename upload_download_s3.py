@@ -97,6 +97,9 @@ def auto_multipart_upload(filename, bucket, key_name, max_size=104857600,
                            bucket.name + ". Please choose a new key name.")
 
     if source_size > max_size:
+        if  NO_CHUNKIO_FLAG:
+            raise ImportError("Cannot perform multi-part upload without"
+                              " FileChunkIO")
         mp = bucket.initiate_multipart_upload(key_name)
 
         nchunks = int(math.ceil(source_size / float(chunk_size)))
