@@ -1,7 +1,11 @@
+# License under the MIT License - see LICENSE
 
-import boto.s3
 from boto.s3.connection import S3Connection
+from boto.s3.key import Key
 import os
+import math
+
+from utils import timestring
 
 try:
     from filechunkio import FileChunkIO
@@ -13,7 +17,7 @@ except ImportError:
 
 
 def upload_to_s3(bucket_name, key_name, upload_item, key_metadata={},
-                 create_bucket=False, chunksize=52428800, connection=None,
+                 create_bucket=False, chunksize=52428800, conn=None,
                  aws_access={}):
     '''
     Upload a file or folder to an S3 bucket. Optionally, a new bucket can be
@@ -25,22 +29,72 @@ def upload_to_s3(bucket_name, key_name, upload_item, key_metadata={},
     '''
 
     # Create S3 connection if none are given.
-    if connection is None:
+    if conn is None:
         if "AWS_ACCESS_KEY_ID" in aws_access.keys() and "AWS_ACCESS_KEY_SECRET" in aws_access.keys():
-            connection =S3Connection(**aws_access)
+            conn = S3Connection(**aws_access)
         elif len(aws_access.keys()) > 0:
             raise KeyError("aws_access must contain 'AWS_ACCESS_KEY_ID'"
                            " and 'AWS_ACCESS_KEY_SECRET'. All other"
                            " entries are ignored.")
         else:
-            connection = s3.connection.S3Connection()
+            # Use the AWS Keys saved on your machine.
+            conn = s3.connection.S3Connection()
     else:
-        if not isinstance(connection, S3Connection):
-            raise TypeError("connection provided is not an S3 Connection.")
+        if not isinstance(conn, S3Connection):
+            raise TypeError("conn provided is not an S3 Connection.")
 
     # Check if that bucket exists. Otherwise create a new one if asked for.
+    bucket_exists = True if bucket_name in conn.get_all_buckets() else False
+
+    if bucket_exists and create_bucket:
+        raise Warning("The bucket name given '" + bucket_name +
+                      "' already exists.")
+
+    if create_bucket:
+        bucket = conn.create_bucket(bucket_name)
+    else:
+        bucket = conn.get_bucket(bucket_name)
+
+    # Check if the given key already exists in the bucket.
+
+    if key_name in bucket.get_all_keys():
+        raise KeyError(key_name + " already exists in the bucket " +
+                       bucket_name + ". Please choose a new key name.")
+
+    # Now check if the item to upload is a file or folder
+    if os.path.isdir(upload_item):
+        pass
+    else:
+        pass
 
 
+def auto_multipart_upload(filename, bucket, key_name, max_size=104857600,
+                          chunk_size=52428800):
+    '''
+    Based on the size of the file to be uploaded, automatically partition into
+    a multi-part upload.
+    '''
+
+    source_size = os.stat(filename).st_size
+
+    if source_size > max_size:
+        mp = bucket.initiate_multipart_upload(key_name)
+
+        nchunks = int(math.ceil(source_size / float(chunk_size)))
+
+        for i in range(nchunks):
+            offset = chunk_size * i
+            bytes = min(chunk_size, source_size - offset)
+            with FileChunkIO(filename, 'r', offset=offset, bytes=bytes) as fp:
+                mp.upload_part_from_file(fp, part_num=i+1)
+
+        mp.complete_upload()
+
+    else:
+        # Single part upload
+        k = Key(bucket)
+        k.key = key_name
+        k.set_contents_from_filename(filename)
 
 
 
@@ -50,4 +104,3 @@ def download_from_s3(bucket_name):
 
 def remove_s3_bucket(bucket_name):
     pass
-
