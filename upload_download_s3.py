@@ -44,7 +44,8 @@ def upload_to_s3(bucket_name, upload_item, key_metadata={},
             raise TypeError("conn provided is not an S3 Connection.")
 
     # Check if that bucket exists. Otherwise create a new one if asked for.
-    bucket_exists = True if bucket_name in conn.get_all_buckets() else False
+    existing_buckets = [b.name for b in conn.get_all_buckets()]
+    bucket_exists = True if bucket_name in existing_buckets else False
 
     if bucket_exists and create_bucket:
         raise Warning("The bucket name given '" + bucket_name +
