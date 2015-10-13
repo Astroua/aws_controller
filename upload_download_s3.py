@@ -16,7 +16,7 @@ except ImportError:
             "files will result in an error.")
 
 
-def upload_to_s3(bucket_name, key_name, upload_item, key_metadata={},
+def upload_to_s3(bucket_name, upload_item, key_metadata={},
                  create_bucket=False, chunksize=52428800, conn=None,
                  aws_access={}):
     '''
@@ -55,7 +55,10 @@ def upload_to_s3(bucket_name, key_name, upload_item, key_metadata={},
     else:
         bucket = conn.get_bucket(bucket_name)
 
-    # Check if the given key already exists in the bucket.
+    # Check if the given key (ie. file or folder name) already exists in
+    # the bucket.
+
+    key_name = upload_item.split("/")[-1]
 
     if key_name in bucket.get_all_keys():
         raise KeyError(key_name + " already exists in the bucket " +
@@ -64,8 +67,11 @@ def upload_to_s3(bucket_name, key_name, upload_item, key_metadata={},
     # Now check if the item to upload is a file or folder
     if os.path.isdir(upload_item):
         pass
+    elif os.path.isfile(upload_item):
+        auto_multipart_upload(upload_item, bucket, key_name)
     else:
-        pass
+        raise TypeError(upload_item + " is not an existing file or folder."
+                        " Check given input.")
 
 
 def auto_multipart_upload(filename, bucket, key_name, max_size=104857600,
