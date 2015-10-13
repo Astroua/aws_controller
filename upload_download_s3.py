@@ -61,14 +61,16 @@ def upload_to_s3(bucket_name, upload_item, key_metadata={},
     # Now check if the item to upload is a file or folder
     if os.path.isdir(upload_item):
         # Walk through the folder structure.
-        for (source_dir, _, filename) in os.walk(upload_item):
-            full_filename = os.path.join(source_dir, filename)
+        for (source_dir, _, filename_list) in os.walk(upload_item):
+            for filename in filename_list:
+                full_filename = os.path.join(source_dir, filename)
 
-            # Get a key that starts with key_name, but includes the rest of
-            # the file structure.
-            full_key_path = source_dir.lstrip(source_dir.split(key_name)[0])
-            full_key_name = os.path.join(full_key_path, filename)
-            auto_multipart_upload(full_filename, bucket, full_key_name)
+                # Get a key that starts with key_name, but includes the rest of
+                # the file structure.
+                full_key_path = \
+                    source_dir.lstrip(source_dir.split(key_name)[0])
+                full_key_name = os.path.join(full_key_path, filename)
+                auto_multipart_upload(full_filename, bucket, full_key_name)
     elif os.path.isfile(upload_item):
         auto_multipart_upload(upload_item, bucket, key_name)
     else:
