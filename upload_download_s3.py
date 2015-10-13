@@ -117,5 +117,14 @@ def download_from_s3(bucket_name):
     pass
 
 
-def remove_s3_bucket(bucket_name):
-    pass
+def remove_s3_bucket(bucket_name, connection):
+    '''
+    Delete entire bucket.
+    '''
+
+    bucket = connection.get_bucket(bucket_name)
+
+    for key in bucket.list():
+        key.delete()
+
+    bucket.delete()
