@@ -152,3 +152,16 @@ def remove_s3_bucket(bucket_name, connection):
         key.delete()
 
     bucket.delete()
+
+
+def remove_s3_key(key_names, bucket_name, connection):
+    '''
+    Delete a key or a list of keys in a given bucket.
+    '''
+
+    bucket = connection.get_bucket(bucket_name)
+
+    if isinstance(key_names, list):
+        bucket.delete_keys(key_names)
+    else:
+        bucket.delete_key(key_names)
