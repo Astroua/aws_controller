@@ -114,7 +114,8 @@ def auto_multipart_upload(filename, bucket, key_name, max_size=104857600,
         k.set_contents_from_filename(filename)
 
 
-def download_from_s3(filename, key_name, bucket_name, conn=None, aws_access={}):
+def download_from_s3(filename, key_name, bucket_name, conn=None,
+                     aws_access={}):
     '''
     '''
 
