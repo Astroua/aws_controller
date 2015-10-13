@@ -21,7 +21,7 @@ def upload_to_s3(bucket_name, upload_item, key_metadata={},
                  aws_access={}):
     '''
     Upload a file or folder to an S3 bucket. Optionally, a new bucket can be
-    created. For files larger than 100 Mb, downloads are split into chunks.
+    created. For files larger than 50 Mb, downloads are split into chunks.
     *This requires installing the FileChunkIO library.*
 
     Folder uploading is modeled from: https://gist.github.com/SavvyGuard/6115006
