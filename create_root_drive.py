@@ -3,14 +3,9 @@
 
 from boto.manage.cmdshell import sshclient_from_instance
 import warnings
-from datetime import datetime
 
 from launch_instance import launch
-
-
-def timestring():
-    TimeString = datetime.now().strftime("%Y%m%d%H%M%S%f")
-    return TimeString
+from utils import timestring
 
 
 def create_root_drive(name, path_to_key, image_description=None,
