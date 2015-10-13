@@ -71,9 +71,10 @@ def upload_to_s3(bucket_name, upload_item,
                     source_dir.lstrip(source_dir.split(key_name)[0])
                 full_key_name = os.path.join(full_key_path, filename)
                 auto_multipart_upload(full_filename, bucket, full_key_name,
-                                      replace=replace)
+                                      replace=replace, chunksize=chunksize)
     elif os.path.isfile(upload_item):
-        auto_multipart_upload(upload_item, bucket, key_name, replace=replace)
+        auto_multipart_upload(upload_item, bucket, key_name, replace=replace,
+                              chunksize=chunksize)
     else:
         raise TypeError(upload_item + " is not an existing file or folder."
                         " Check given input.")
