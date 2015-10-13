@@ -18,7 +18,7 @@ except ImportError:
 
 def upload_to_s3(bucket_name, upload_item, key_metadata={},
                  create_bucket=False, chunksize=52428800, conn=None,
-                 aws_access={}):
+                 aws_access={}, replace=False):
     '''
     Upload a file or folder to an S3 bucket. Optionally, a new bucket can be
     created. For files larger than 50 Mb, downloads are split into chunks.
@@ -70,16 +70,17 @@ def upload_to_s3(bucket_name, upload_item, key_metadata={},
                 full_key_path = \
                     source_dir.lstrip(source_dir.split(key_name)[0])
                 full_key_name = os.path.join(full_key_path, filename)
-                auto_multipart_upload(full_filename, bucket, full_key_name)
+                auto_multipart_upload(full_filename, bucket, full_key_name,
+                                      replace=replace)
     elif os.path.isfile(upload_item):
-        auto_multipart_upload(upload_item, bucket, key_name)
+        auto_multipart_upload(upload_item, bucket, key_name, replace=replace)
     else:
         raise TypeError(upload_item + " is not an existing file or folder."
                         " Check given input.")
 
 
 def auto_multipart_upload(filename, bucket, key_name, max_size=104857600,
-                          chunk_size=52428800):
+                          chunk_size=52428800, replace=False):
     '''
     Based on the size of the file to be uploaded, automatically partition into
     a multi-part upload.
@@ -89,10 +90,11 @@ def auto_multipart_upload(filename, bucket, key_name, max_size=104857600,
 
     # Check if the given key (ie. file or folder name) already exists in
     # the bucket.
-    all_key_names = [k.name for k in bucket.get_all_keys()]
-    if key_name in all_key_names:
-        raise KeyError(key_name + " already exists in the bucket " +
-                       bucket.name + ". Please choose a new key name.")
+    if not replace:
+        all_key_names = [k.name for k in bucket.get_all_keys()]
+        if key_name in all_key_names:
+            raise KeyError(key_name + " already exists in the bucket " +
+                           bucket.name + ". Please choose a new key name.")
 
     if source_size > max_size:
         mp = bucket.initiate_multipart_upload(key_name)
@@ -111,7 +113,7 @@ def auto_multipart_upload(filename, bucket, key_name, max_size=104857600,
         # Single part upload
         k = Key(bucket)
         k.key = key_name
-        k.set_contents_from_filename(filename)
+        k.set_contents_from_filename(filename, replace=replace)
 
 
 def download_from_s3(filename, key_name, bucket_name, conn=None,
