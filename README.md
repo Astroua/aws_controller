@@ -42,6 +42,48 @@ These two calls are equivalent, and will install CASA 4.3 on a new image. By def
 
 When completed, you should see a new image registered on the AWS EC2 console.
 
+Uploading to S3
+---------------------------
+S3 buckets can be created and accessed using the functions in `upload_download_s3.py`.
+Files and folders can be uploaded by running:
+```
+from upload_download_s3 import upload_to_s3
+upload_to_s3("mybucket", "myfile")
+```
+The function will automatically invoke a multi-part upload for large file (set by `chunksize` with a default of 50 Mb). This requires the FileChunkIO package (installable via pip: `pip install FileChunkIO`). *If your AWS credentials are not set, you must specify them with the aws_access keyword as a dictionary.*
+
+The above call assumes that "mybucket" pre-exists on S3. To create a new bucket:
+```
+upload_to_s3("mybucket", "myfile", create_bucket=True)
+```
+An error is returned if that bucket name already exists.
+`upload_to_s3` automatically recognizes a folder input, and will upload each file in the folder, reproducing the internal file structure.
+
+Keys can be deleted from a bucket with:
+```
+remove_s3_key('mykey', 'mybucket', s3_connection)
+```
+
+The `s3_connection` is a boto class (see [the tutorial](http://boto.readthedocs.org/en/latest/s3_tut.html#creating-a-connection)).
+
+Entire buckets can also be deleted:
+```
+remove_s3_bucket('mybucket', s3_connection)
+```
+
+Downloading from S3
+-------------------
+To download a file from an S3 bucket:
+```
+from upload_download_s3 import download_from_s3
+download_from_s3('local_output_filename', 'mykey', 'my_bucket')
+```
+You should now see the file `local_output_filename`.
+**Support for downloading entire folder is not yet complete.**
+
+
+
+
 Developers
 ----------
 * Eric Koch [@e-koch](https://github.com/e-koch)
