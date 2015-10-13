@@ -55,14 +55,19 @@ def upload_to_s3(bucket_name, upload_item, key_metadata={},
     else:
         bucket = conn.get_bucket(bucket_name)
 
-    # Check if the given key (ie. file or folder name) already exists in
-    # the bucket.
-
-    key_name = upload_item.rtstrip("/").split("/")[-1]
+    key_name = upload_item.rstrip("/").split("/")[-1]
 
     # Now check if the item to upload is a file or folder
     if os.path.isdir(upload_item):
-        # Walk through
+        # Walk through the folder structure.
+        for (source_dir, _, filename) in os.walk(upload_item):
+            full_filename = os.path.join(source_dir, filename)
+
+            # Get a key that starts with key_name, but includes the rest of
+            # the file structure.
+            full_key_path = source_dir.lstrip(source_dir.split(key_name)[0])
+            full_key_name = os.path.join(full_key_path, filename)
+            auto_multipart_upload(full_filename, bucket, full_key_name)
     elif os.path.isfile(upload_item):
         auto_multipart_upload(upload_item, bucket, key_name)
     else:
@@ -79,6 +84,8 @@ def auto_multipart_upload(filename, bucket, key_name, max_size=104857600,
 
     source_size = os.stat(filename).st_size
 
+    # Check if the given key (ie. file or folder name) already exists in
+    # the bucket.
     if key_name in bucket.get_all_keys():
         raise KeyError(key_name + " already exists in the bucket " +
                        bucket.name + ". Please choose a new key name.")
