@@ -87,7 +87,8 @@ def auto_multipart_upload(filename, bucket, key_name, max_size=104857600,
 
     # Check if the given key (ie. file or folder name) already exists in
     # the bucket.
-    if key_name in bucket.get_all_keys():
+    all_key_names = [k.name for k in bucket.get_all_keys()]
+    if key_name in all_key_names:
         raise KeyError(key_name + " already exists in the bucket " +
                        bucket.name + ". Please choose a new key name.")
 
