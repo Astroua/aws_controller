@@ -58,11 +58,11 @@ def upload_to_s3(bucket_name, upload_item, key_metadata={},
     # Check if the given key (ie. file or folder name) already exists in
     # the bucket.
 
-    key_name = upload_item.split("/")[-1]
+    key_name = upload_item.rtstrip("/").split("/")[-1]
 
     # Now check if the item to upload is a file or folder
     if os.path.isdir(upload_item):
-        pass
+        # Walk through
     elif os.path.isfile(upload_item):
         auto_multipart_upload(upload_item, bucket, key_name)
     else:
