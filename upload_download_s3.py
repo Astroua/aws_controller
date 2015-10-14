@@ -4,6 +4,7 @@ from boto.s3.connection import S3Connection
 from boto.s3.key import Key
 import os
 import math
+import fnmatch
 
 from utils import timestring
 
@@ -140,8 +141,8 @@ def auto_multipart_upload(filename, bucket, key_name, max_size=104857600,
         k.set_contents_from_filename(filename, replace=replace)
 
 
-def download_from_s3(filename, key_name, bucket_name, conn=None,
-                     aws_access={}):
+def download_from_s3(key_name, bucket_name, conn=None,
+                     aws_access={}, output_dir=None):
     '''
 
     Download a key from a S3 bucket and save to a given file name.
@@ -151,8 +152,6 @@ def download_from_s3(filename, key_name, bucket_name, conn=None,
 
     Parameters
     ----------
-    filename : str
-        Name of output file.
     key_name : str
         Name of key in S3 bucket.
     bucket_name : str
@@ -180,11 +179,24 @@ def download_from_s3(filename, key_name, bucket_name, conn=None,
         if not isinstance(conn, S3Connection):
             raise TypeError("conn provided is not an S3 Connection.")
 
+    if output_dir is None:
+        output_dir = ""
+
     bucket = conn.get_bucket(bucket_name)
 
-    key = bucket.get_key(key_name)
+    if "*" not in key_name:
+        key = bucket.get_key(key_name)
 
-    key.get_contents_to_filename(filename)
+        out_file = os.path.join(output_dir, key_name)
+
+        key.get_contents_to_filename(out_file)
+    else:
+        all_keys = bucket.get_all_keys()
+
+        for key in all_keys:
+            if fnmatch.fnmatchcase(key.name, key_name):
+                out_file = os.path.join(output_dir, key.name)
+                key.get_contents_to_filename(out_file)
 
 
 def remove_s3_bucket(bucket_name, connection):
