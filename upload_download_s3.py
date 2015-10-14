@@ -199,7 +199,8 @@ def download_from_s3(key_name, bucket_name, conn=None,
 
                 # Check that the file structure exists. If not, create it.
                 folders = out_file.rstrip("/").split("/")[:-1]
-                for folder in accumulator(folders):
+                slash_start = 0 if out_file.startswith("/") else 1
+                for folder in accumulator(folders, start_space=slash_start):
                     if os.path.isdir(folder):
                         continue
                     os.mkdir(folder)
