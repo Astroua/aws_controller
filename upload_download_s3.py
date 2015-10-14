@@ -187,7 +187,8 @@ def download_from_s3(key_name, bucket_name, conn=None,
     if "*" not in key_name:
         key = bucket.get_key(key_name)
 
-        out_file = os.path.join(output_dir, key_name)
+        # Strip out preceding directory and leave filename
+        out_file = os.path.join(output_dir, key_name.split("/")[-1])
 
         key.get_contents_to_filename(out_file)
     else:
