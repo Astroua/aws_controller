@@ -199,8 +199,10 @@ def download_from_s3(key_name, bucket_name, conn=None,
 
                 # Check that the file structure exists. If not, create it.
                 folders = out_file.rstrip("/").split("/")[:-1]
-                for folder in folders:
-                    if os.path.isdir(folder)
+                for folder in accumulator(folders):
+                    if os.path.isdir(folder):
+                        continue
+                    os.mkdir(folder)
                 key.get_contents_to_filename(out_file)
 
 
@@ -247,11 +249,11 @@ def remove_s3_key(key_names, bucket_name, connection):
         bucket.delete_key(key_names)
 
 
-def accumulator(iterable, typeof=str, spacer="/"):
+def accumulator(iterable, typeof=str, spacer="/", start_space=0):
     total = typeof()
 
     for i, item in enumerate(iterable):
-        if i > 0:
+        if i >= start_space:
             total += spacer+item
         else:
             total += item
