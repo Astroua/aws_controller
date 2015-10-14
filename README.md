@@ -76,12 +76,14 @@ Downloading from S3
 To download a file from an S3 bucket:
 ```
 from upload_download_s3 import download_from_s3
-download_from_s3('local_output_filename', 'mykey', 'my_bucket')
+download_from_s3('mykey', 'my_bucket')
 ```
-You should now see the file `local_output_filename`.
-**Support for downloading entire folder is not yet complete.**
-
-
+You should now see the file name `mykey` will be downloaded. If the file is in folder structure in the bucket, the filename itself will be the downloaded filename ("path/to/myfile.txt" becomes "myfile.txt").
+Wildcards can be used to download groups of keys from a bucket:
+```
+download_from_s3('mykeys/*', 'my_bucket')
+```
+will download all keys in the bucket beginning with `mykeys/*`. The output directory can be specified with the `output_dir` argument.
 
 
 Developers
