@@ -91,7 +91,7 @@ def upload_to_s3(bucket_name, upload_item,
                     source_dir.lstrip(source_dir.split(key_name)[0])
                 full_key_name = os.path.join(full_key_path, filename)
                 auto_multipart_upload(full_filename, bucket, full_key_name,
-                                      replace=replace, chunksize=chunksize)
+                                      replace=replace, chunk_size=chunk_size)
     elif os.path.isfile(upload_item):
         auto_multipart_upload(upload_item, bucket, key_name, replace=replace,
                               chunk_size=chunk_size)
