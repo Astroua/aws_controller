@@ -18,7 +18,7 @@ except ImportError:
 
 
 def upload_to_s3(bucket_name, upload_item,
-                 create_bucket=False, chunksize=52428800, conn=None,
+                 create_bucket=False, chunk_size=52428800, conn=None,
                  aws_access={}, replace=False):
     '''
     Upload a file or folder to an S3 bucket. Optionally, a new bucket can be
@@ -94,7 +94,7 @@ def upload_to_s3(bucket_name, upload_item,
                                       replace=replace, chunksize=chunksize)
     elif os.path.isfile(upload_item):
         auto_multipart_upload(upload_item, bucket, key_name, replace=replace,
-                              chunksize=chunksize)
+                              chunk_size=chunk_size)
     else:
         raise TypeError(upload_item + " is not an existing file or folder."
                         " Check given input.")
