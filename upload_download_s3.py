@@ -153,7 +153,8 @@ def download_from_s3(key_name, bucket_name, conn=None,
     Parameters
     ----------
     key_name : str
-        Name of key in S3 bucket.
+        Name of key in S3 bucket. Supports wildcards for downloading groups or
+        "folder" structures in a bucket.
     bucket_name : str
         Name of existing bucket or one to be created.
     conn : boto.s3.connection.S3Connection, optional
@@ -162,6 +163,8 @@ def download_from_s3(key_name, bucket_name, conn=None,
         Dictionary where AWS_ACCESS_KEY_ID and AWS_ACCESS_KEY_SECRET can be
         given to open a connection. Not needed if your credentials are set
         on your machine.
+    output_dir : str
+        Path appended to the files downloaded.
     '''
 
     # Create S3 connection if none are given.
