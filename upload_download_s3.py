@@ -214,8 +214,6 @@ def remove_s3_bucket(bucket_name, connection):
 
     Parameters
     ----------
-    key_name : str or list
-        Name of key or list of keys in S3 bucket.
     bucket_name : str
         Name of existing bucket or one to be created.
     conn : boto.s3.connection.S3Connection
@@ -236,8 +234,11 @@ def remove_s3_key(key_names, bucket_name, connection):
 
     Parameters
     ----------
+    key_name : str or list
+        Name of key or list of keys in S3 bucket. Wildcards are also
+        supported.
     bucket_name : str
-        Name of existing bucket or one to be created.
+        Name of existing bucket.
     conn : boto.s3.connection.S3Connection
         A connection to S3.
 
@@ -247,6 +248,11 @@ def remove_s3_key(key_names, bucket_name, connection):
 
     if isinstance(key_names, list):
         bucket.delete_keys(key_names)
+    elif "*" in key_names:
+        all_keys = bucket.get_all_keys()
+        for key in all_keys:
+            if fnmatch.fnmatchcase(key.name, key_names):
+                bucket.delete_key(key.name)
     else:
         bucket.delete_key(key_names)
 
