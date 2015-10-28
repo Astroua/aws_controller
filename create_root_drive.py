@@ -112,7 +112,8 @@ def install_packages(instance, path_to_key, install_casa=True,
 
     if install_miniconda:
         run_script.append("sh $HOME/aws_controller/casa-deploy/install_miniconda.sh")
-        run_script.append(source_profile + "&& conda update --yes conda")
+        run_script.append("sh $HOME/.profile && conda update --yes conda")
+        run_script.append("sh $HOME/aws_controller/casa-deploy/install_aegean.sh")
 
     # Start-up the SSH connection
     ssh_shell = sshclient_from_instance(instance, path_to_key,
