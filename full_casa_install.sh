@@ -5,7 +5,7 @@ sh $HOME/.profile
 
 casa_version=${1}
 
-sh $HOME/aws_controller/casa-deploy/deploy_casa${casa_version}.sh
+sh $HOME/aws_controller/casa-deploy/deploy_casa${casa_version}.sh $HOME/aws_controller/casa-deploy/casa_initialize.py
 sh $HOME/.profile
 
 sh $HOME/aws_controller/casa-deploy/install_casa_pip.sh
