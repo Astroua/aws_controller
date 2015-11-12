@@ -41,7 +41,7 @@ def upload_to_s3(bucket_name, upload_item,
     conn : boto.s3.connection.S3Connection, optional
         A connection to S3. Otherwise, one is created.
     aws_access : dict, optional
-        Dictionary where AWS_ACCESS_KEY_ID and AWS_ACCESS_KEY_SECRET can be
+        Dictionary where aws_access_key_id and aws_secret_access_key can be
         given to open a connection. Not needed if your credentials are set
         on your machine.
     replace : bool, optional
@@ -50,11 +50,11 @@ def upload_to_s3(bucket_name, upload_item,
 
     # Create S3 connection if none are given.
     if conn is None:
-        if "AWS_ACCESS_KEY_ID" in aws_access.keys() and "AWS_ACCESS_KEY_SECRET" in aws_access.keys():
+        if "aws_access_key_id" in aws_access.keys() and "aws_secret_access_key" in aws_access.keys():
             conn = S3Connection(**aws_access)
         elif len(aws_access.keys()) > 0:
-            raise KeyError("aws_access must contain 'AWS_ACCESS_KEY_ID'"
-                           " and 'AWS_ACCESS_KEY_SECRET'. All other"
+            raise KeyError("aws_access must contain 'aws_access_key_id'"
+                           " and 'aws_secret_access_key'. All other"
                            " entries are ignored.")
         else:
             # Use the AWS Keys saved on your machine.
@@ -157,7 +157,7 @@ def download_from_s3(key_name, bucket_name, conn=None,
     conn : boto.s3.connection.S3Connection, optional
         A connection to S3. Otherwise, one is created.
     aws_access : dict, optional
-        Dictionary where AWS_ACCESS_KEY_ID and AWS_ACCESS_KEY_SECRET can be
+        Dictionary where aws_access_key_id and aws_secret_access_key can be
         given to open a connection. Not needed if your credentials are set
         on your machine.
     output_dir : str
@@ -166,11 +166,11 @@ def download_from_s3(key_name, bucket_name, conn=None,
 
     # Create S3 connection if none are given.
     if conn is None:
-        if "AWS_ACCESS_KEY_ID" in aws_access.keys() and "AWS_ACCESS_KEY_SECRET" in aws_access.keys():
+        if "aws_access_key_id" in aws_access.keys() and "aws_secret_access_key" in aws_access.keys():
             conn = S3Connection(**aws_access)
         elif len(aws_access.keys()) > 0:
-            raise KeyError("aws_access must contain 'AWS_ACCESS_KEY_ID'"
-                           " and 'AWS_ACCESS_KEY_SECRET'. All other"
+            raise KeyError("aws_access must contain 'aws_access_key_id'"
+                           " and 'aws_secret_access_key'. All other"
                            " entries are ignored.")
         else:
             # Use the AWS Keys saved on your machine.
