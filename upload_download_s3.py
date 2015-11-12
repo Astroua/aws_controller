@@ -147,9 +147,6 @@ def download_from_s3(key_name, bucket_name, conn=None,
 
     Download a key from a S3 bucket and save to a given file name.
 
-    **Currently only supports one key at a time. This will be extended
-    to allow for S3 'folders' to be downloaded.**
-
     Parameters
     ----------
     key_name : str
