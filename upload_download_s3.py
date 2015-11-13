@@ -88,7 +88,7 @@ def upload_to_s3(bucket_name, upload_item,
                 # Get a key that starts with key_name, but includes the rest of
                 # the file structure.
                 full_key_path = \
-                    source_dir.lstrip(source_dir.split(key_name)[0])
+                    source_dir.replace(source_dir.split(key_name)[0], "")
                 full_key_name = os.path.join(full_key_path, filename)
                 auto_multipart_upload(full_filename, bucket, full_key_name,
                                       replace=replace, chunk_size=chunk_size)
