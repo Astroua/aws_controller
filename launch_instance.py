@@ -7,7 +7,7 @@ import time
 
 def launch(key_name, region='us-west-2', image_id='ami-5189a661',
            instance_type='t2.micro', security_groups='launch-wizard-1',
-           user_data=None):
+           user_data=None, initial_check=True):
     '''
     '''
 
@@ -30,11 +30,12 @@ def launch(key_name, region='us-west-2', image_id='ami-5189a661',
     # Wait for the status checks first
     status = ec2.get_all_instance_status(instance_ids=[inst.id])[0]
 
-    check_stat = "Status:initializing"
+    if initial_check:
+        check_stat = "Status:initializing"
 
-    while str(status.system_status) == check_stat and str(status.instance_status) == check_stat:
-        time.sleep(10)
-        status = ec2.get_all_instance_status(instance_ids=[inst.id])[0]
+        while str(status.system_status) == check_stat and str(status.instance_status) == check_stat:
+            time.sleep(10)
+            status = ec2.get_all_instance_status(instance_ids=[inst.id])[0]
 
     return inst
 
