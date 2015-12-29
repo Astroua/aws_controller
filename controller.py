@@ -7,9 +7,13 @@ import boto
 import json
 
 
-BOOTSTRAP_SCRIPT="""#!/bin/bash
+WORKER_SCRIPT="""#!/bin/bash
 
-python -c "from aws_controller import Worker
+HOME=/home/USER
+
+cd $HOME
+
+$HOME/miniconda/bin/python -c "from aws_controller import Worker
 
 work = Worker.from_queue(queue_name)
 
