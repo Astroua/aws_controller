@@ -6,7 +6,8 @@ import time
 
 
 def launch(key_name, region='us-west-2', image_id='ami-5189a661',
-           instance_type='t2.micro', security_groups='launch-wizard-1'):
+           instance_type='t2.micro', security_groups='launch-wizard-1',
+           user_data=None):
     '''
     '''
 
@@ -17,7 +18,8 @@ def launch(key_name, region='us-west-2', image_id='ami-5189a661',
 
     reserve = ec2.run_instances(image_id, key_name=key_name,
                                 instance_type=instance_type,
-                                security_groups=security_groups)
+                                security_groups=security_groups,
+                                user_data=user_data)
 
     inst = reserve.instances[0]
 
