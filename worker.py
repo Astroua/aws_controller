@@ -1,7 +1,6 @@
+# License under the MIT License - see LICENSE
 
 import boto
-import boto.sqs as sqs
-import boto.s3 as s3
 import json
 from subprocess import Popen, PIPE
 import os
