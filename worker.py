@@ -10,31 +10,30 @@ from upload_download_s3 import download_from_s3, upload_to_s3
 
 class Worker(object):
     """docstring for Worker"""
-    def __init__(self, queue, key, secret):
-        super(Worker, self).__init__()
-        self.queue = boto.connect_sqs(key, secret).create_queue(queue)
+    def __init__(self, queue_name, key, secret, region='us-west-2'):
+
+        self.queue_name = queue_name
         self.message_dict = None
 
-        self.credentials = {'key': key, 'secret': secret}
+        self.credentials = {'aws_access_key_id': key,
+                            'aws_secret_access_key': secret}
+        self.key = key
+        self.secret = secret
+        self.region = region
 
         self.success = True
         self.empty_flag = False
-
-    @staticmethod
-    def from_queue(queue):
-
-        self = Worker(queue)
-        self.receive_message()
-
-        return self
 
     def receive_message(self, max_time=3600):
         '''
         Connect to the queue and read the next message.
         '''
 
+        queue = boto.sqs.connect_to_region(self.region,
+                                           aws_access_key_id=self.key,
+                                           aws_secret_access_key=self.secret).create_queue(self.queue_name)
         # Get the message from the queue within some max time
-        mess = self.queue.read(max_time)
+        mess = queue.read(max_time)
 
         if mess is None:
             self.empty_flag = True
@@ -95,8 +94,10 @@ class Worker(object):
                     self.message_dict['upload_results'] = e
                     self.success = False
 
-    def send_result_message(self, queue_name):
-        resp_queue = boto.connect_sqs(self.key, self.secret).create_queue(queue_name)
+    def send_result_message(self, resp_queue_name):
+        resp_queue = boto.sqs.connect_to_region(self.region,
+                                           aws_access_key_id=self.key,
+                                           aws_secret_access_key=self.secret).create_queue(resp_queue_name)
         resp_message = {'proc_name': self.proc_name,
                         'success': self.success,
                         'messages': self.message_dict}
