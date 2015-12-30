@@ -19,7 +19,7 @@ except ImportError:
 
 def upload_to_s3(bucket_name, upload_item,
                  create_bucket=False, chunk_size=52428800, conn=None,
-                 aws_access={}, replace=False):
+                 aws_access={}, replace=False, key_prefix=None):
     '''
     Upload a file or folder to an S3 bucket. Optionally, a new bucket can be
     created. For files larger than 50 Mb (by default), downloads are split
@@ -31,7 +31,7 @@ def upload_to_s3(bucket_name, upload_item,
     ----------
     bucket_name : str
         Name of existing bucket or one to be created.
-    upload_iterm : str
+    upload_item : str
         File or folder to be uploaded.
     create_bucket : bool, optional
         Set whether to create a new bucket. An error is raised if the bucket
@@ -46,6 +46,8 @@ def upload_to_s3(bucket_name, upload_item,
         on your machine.
     replace : bool, optional
         Allow files to be overwritten if the key already exists.
+    key_prefix : str, optional
+        Add a prefix for the bucket key name.
     '''
 
     # Create S3 connection if none are given.
@@ -76,7 +78,11 @@ def upload_to_s3(bucket_name, upload_item,
     else:
         bucket = conn.get_bucket(bucket_name)
 
-    key_name = upload_item.rstrip("/").split("/")[-1]
+    if key_prefix is None:
+        key_name = upload_item.rstrip("/").split("/")[-1]
+    else:
+        key_name = os.path.join(key_prefix,
+                                upload_item.rstrip("/").split("/")[-1])
 
     # Now check if the item to upload is a file or folder
     if os.path.isdir(upload_item):
