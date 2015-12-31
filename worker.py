@@ -69,7 +69,7 @@ class Worker(object):
             try:
                 proc = Popen(self.command, stderr=PIPE, stdout=PIPE)
                 # Check the files in the output folder
-                self.output_files = os.listdir("data_output")
+                self.output_files = os.listdir("data_products")
                 if len(self.output_files) == 0:
                     raise Exception("No output files found.")
                 self.message_dict['execute'] = "Successfully executed command."
