@@ -49,7 +49,10 @@ class Worker(object):
             self.command = contents['command']
             self.parameters = contents['parameters']
 
-            self.queue.delete_message(mess)
+            try:
+                queue.delete_message(mess)
+            except Exception:
+                print("No message to delete.")
 
             if save_message:
                 with open("data/params.txt", "w") as f:
