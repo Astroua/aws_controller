@@ -89,6 +89,7 @@ class Worker(object):
             except Exception:
                 self.success = False
                 self.message_dict['execute'] = tr.format_exc()
+                self.output_files = []
 
     def upload_results(self):
 
