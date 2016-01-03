@@ -27,10 +27,10 @@ def launch(key_name=None, region='us-west-2', image_id='ami-5189a661',
         time.sleep(10)
         inst.update()
 
-    # Wait for the status checks first
-    status = ec2.get_all_instance_status(instance_ids=[inst.id])[0]
-
     if initial_check:
+        # Wait for the status checks first
+        status = ec2.get_all_instance_status(instance_ids=[inst.id])[0]
+
         check_stat = "Status:initializing"
 
         while str(status.system_status) == check_stat and str(status.instance_status) == check_stat:
