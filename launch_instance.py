@@ -5,7 +5,7 @@ import os
 import time
 
 
-def launch(key_name, region='us-west-2', image_id='ami-5189a661',
+def launch(key_name=None, region='us-west-2', image_id='ami-5189a661',
            instance_type='t2.micro', security_groups='launch-wizard-1',
            user_data=None, initial_check=True):
     '''
