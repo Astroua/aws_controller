@@ -24,7 +24,7 @@ class Worker(object):
         self.success = True
         self.empty_flag = False
 
-    def receive_message(self, max_time=3600):
+    def receive_message(self, max_time=3600, save_message=True):
         '''
         Connect to the queue and read the next message.
         '''
@@ -49,6 +49,10 @@ class Worker(object):
             self.parameters = contents['parameters']
 
             self.queue.delete_message(mess)
+
+            if save_message:
+                with open("data/params.txt", "w") as f:
+                    json.dump(mess, f)
 
             self.message_dict['receive_message'] = "Successfully read message."
 
