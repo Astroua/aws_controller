@@ -68,7 +68,7 @@ class Worker(object):
                                  aws_access=self.credentials,
                                  output_dir="data/")
                 self.message_dict['download_data'] = "Successfully downloaded data."
-            except Exception as e:
+            except Exception:
                 self.success = False
                 self.message_dict['download_data'] = tr.format_exc()
 
@@ -82,7 +82,7 @@ class Worker(object):
                     raise Exception("No output files found.")
                 self.message_dict['execute'] = "Successfully executed command."
 
-            except Exception as e:
+            except Exception:
                 self.success = False
                 self.message_dict['execute'] = tr.format_exc()
 
@@ -98,7 +98,7 @@ class Worker(object):
                                      aws_access=self.credentials,
                                      create_bucket=False)
                     self.message_dict['upload_results'] = "Successfully uploaded results."
-                except Exception as e:
+                except Exception:
                     self.message_dict['upload_results'] = tr.format_exc()
                     self.success = False
 
