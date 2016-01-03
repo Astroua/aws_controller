@@ -104,7 +104,7 @@ class Worker(object):
 
     def send_result_message(self, resp_queue_name):
         resp_queue = sqs.connect_to_region(self.region,
-                                           aws_access_key_id=self.key,ipy
+                                           aws_access_key_id=self.key,
                                            aws_secret_access_key=self.secret).create_queue(resp_queue_name)
         resp_message = {'proc_name': self.proc_name,
                         'success': self.success,
