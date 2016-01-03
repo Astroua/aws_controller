@@ -60,7 +60,7 @@ class Worker(object):
 
             self.message_dict['receive_message'] = "Successfully read message."
 
-    def download_data(self, bucket):
+    def download_data(self):
         if not self.empty_flag:
             try:
                 download_from_s3(self.key_name, self.bucket_name,
