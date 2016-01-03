@@ -67,7 +67,8 @@ class Worker(object):
                 download_from_s3(self.key_name, self.bucket_name,
                                  aws_access=self.credentials,
                                  output_dir="data/")
-                self.message_dict['download_data'] = "Successfully downloaded data."
+                self.message_dict['download_data'] = \
+                    "Successfully downloaded data."
             except Exception:
                 self.success = False
                 self.message_dict['download_data'] = tr.format_exc()
@@ -96,8 +97,10 @@ class Worker(object):
                     for out in self.output_files:
                         upload_to_s3(self.bucket_name, out,
                                      aws_access=self.credentials,
-                                     create_bucket=False)
-                    self.message_dict['upload_results'] = "Successfully uploaded results."
+                                     create_bucket=False,
+                                     key_prefix="data_products/")
+                    self.message_dict['upload_results'] = \
+                        "Successfully uploaded results."
                 except Exception:
                     self.message_dict['upload_results'] = tr.format_exc()
                     self.success = False
