@@ -56,7 +56,7 @@ class Worker(object):
 
             if save_message:
                 with open("data/params.txt", "w") as f:
-                    json.dump(mess, f)
+                    json.dump(contents, f)
 
             self.message_dict['receive_message'] = "Successfully read message."
 
