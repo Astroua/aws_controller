@@ -5,6 +5,7 @@ from boto import sqs
 import json
 from subprocess import Popen, PIPE
 import os
+import traceback as tr
 
 from upload_download_s3 import download_from_s3, upload_to_s3
 
@@ -69,7 +70,7 @@ class Worker(object):
                 self.message_dict['download_data'] = "Successfully downloaded data."
             except Exception as e:
                 self.success = False
-                self.message_dict['download_data'] = e
+                self.message_dict['download_data'] = tr.format_exc()
 
     def execute(self):
         if not self.empty_flag:
@@ -83,7 +84,7 @@ class Worker(object):
 
             except Exception as e:
                 self.success = False
-                self.message_dict['execute'] = e
+                self.message_dict['execute'] = tr.format_exc()
 
     def upload_results(self):
 
@@ -98,12 +99,12 @@ class Worker(object):
                                      create_bucket=False)
                     self.message_dict['upload_results'] = "Successfully uploaded results."
                 except Exception as e:
-                    self.message_dict['upload_results'] = e
+                    self.message_dict['upload_results'] = tr.format_exc()
                     self.success = False
 
     def send_result_message(self, resp_queue_name):
         resp_queue = sqs.connect_to_region(self.region,
-                                           aws_access_key_id=self.key,
+                                           aws_access_key_id=self.key,ipy
                                            aws_secret_access_key=self.secret).create_queue(resp_queue_name)
         resp_message = {'proc_name': self.proc_name,
                         'success': self.success,
