@@ -14,7 +14,7 @@ class Worker(object):
     def __init__(self, queue_name, key, secret, region='us-west-2'):
 
         self.queue_name = queue_name
-        self.message_dict = None
+        self.message_dict = {}
 
         self.credentials = {'aws_access_key_id': key,
                             'aws_secret_access_key': secret}
