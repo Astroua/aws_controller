@@ -106,4 +106,5 @@ class Worker(object):
                         'success': self.success,
                         'messages': self.message_dict}
 
-        resp_queue.new_message(body=json.dumps(resp_message))
+        mess = resp_queue.new_message(body=json.dumps(resp_message))
+        resp_queue.write(mess)
