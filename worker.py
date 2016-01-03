@@ -76,7 +76,10 @@ class Worker(object):
     def execute(self):
         if not self.empty_flag:
             try:
-                proc = Popen(self.command, stderr=PIPE, stdout=PIPE)
+                stdout_file = open("data_products/stdout.txt")
+                proc = Popen(self.command, stdout=stdout_file)
+                proc.communicate()
+                stdout_file.close()
                 # Check the files in the output folder
                 self.output_files = os.listdir("data_products")
                 if len(self.output_files) == 0:
