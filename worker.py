@@ -1,6 +1,7 @@
 # License under the MIT License - see LICENSE
 
 import boto
+from boto import sqs
 import json
 from subprocess import Popen, PIPE
 import os
@@ -29,7 +30,7 @@ class Worker(object):
         Connect to the queue and read the next message.
         '''
 
-        queue = boto.sqs.connect_to_region(self.region,
+        queue = sqs.connect_to_region(self.region,
                                            aws_access_key_id=self.key,
                                            aws_secret_access_key=self.secret).create_queue(self.queue_name)
         # Get the message from the queue within some max time
@@ -98,7 +99,7 @@ class Worker(object):
                     self.success = False
 
     def send_result_message(self, resp_queue_name):
-        resp_queue = boto.sqs.connect_to_region(self.region,
+        resp_queue = sqs.connect_to_region(self.region,
                                            aws_access_key_id=self.key,
                                            aws_secret_access_key=self.secret).create_queue(resp_queue_name)
         resp_message = {'proc_name': self.proc_name,
