@@ -76,7 +76,7 @@ class Worker(object):
     def execute(self):
         if not self.empty_flag:
             try:
-                stdout_file = open("data_products/stdout.txt")
+                stdout_file = open("data_products/stdout.txt", "a")
                 proc = Popen(self.command, stdout=stdout_file)
                 proc.communicate()
                 stdout_file.close()
