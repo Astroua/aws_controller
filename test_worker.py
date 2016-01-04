@@ -63,11 +63,11 @@ try:
     inst = launch(key_name=None, region=region, image_id="ami-22decf43",
                   user_data=user_data)
 
-    # sleep 5 min
-    sleep(120)
+    # sleep 1 min
+    sleep(60)
 
     if inst.state == u"running":
-        print("Terminating after 5 min.")
+        print("Terminating after 1 min.")
         inst.terminate()
 
     print("Checking for response message.")
@@ -82,6 +82,13 @@ try:
             json.dump(content, f)
     else:
         print("No message received!")
+
+    # Now download the output file
+    download_from_s3("data_products/*", proc_name,
+                     aws_access={"aws_access_key_id": key,
+                                 "aws_secret_access_key": secret},
+                     output_dir="tests/")
+
 except Exception as e:
     print("Failed with :")
     print(e)
