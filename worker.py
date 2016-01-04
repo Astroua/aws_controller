@@ -49,7 +49,6 @@ class Worker(object):
             self.bucket_name = contents['bucket']
             self.key_name = contents['key_name']
             self.command = contents['command']
-            self.parameters = contents['parameters']
 
             try:
                 queue.delete_message(mess)
