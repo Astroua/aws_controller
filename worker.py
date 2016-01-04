@@ -8,6 +8,7 @@ import os
 import traceback as tr
 
 from upload_download_s3 import download_from_s3, upload_to_s3
+from utils import listdir_fullpath
 
 
 class Worker(object):
@@ -81,7 +82,7 @@ class Worker(object):
                 proc.communicate()
                 stdout_file.close()
                 # Check the files in the output folder
-                self.output_files = os.listdir("data_products")
+                self.output_files = listdir_fullpath("data_products")
                 if len(self.output_files) == 0:
                     raise Exception("No output files found.")
                 self.message_dict['execute'] = "Successfully executed command."
