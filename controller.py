@@ -10,13 +10,17 @@ from utils import timestring
 from upload_download_s3 import download_from_s3, upload_to_s3
 
 
-WORKER_SCRIPT="""#!/bin/bash
+WORKER_SCRIPT = """#!/bin/bash
 
 HOME=/home/%(USER)s
 
 cd $HOME
 
-$HOME/miniconda/bin/python -c "from aws_controller import Worker
+cd aws_controller
+/usr/bin/git pull
+cd ..
+
+$HOME/miniconda/bin/python -c "from aws_controller.worker import Worker
 
 work = Worker('%(QUEUE_NAME)s', '%(KEY)s', '%(SECRET)s', '%(REGION)s')
 
