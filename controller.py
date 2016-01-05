@@ -12,7 +12,7 @@ from upload_download_s3 import download_from_s3, upload_to_s3
 
 WORKER_SCRIPT = """#!/bin/bash
 
-HOME=/home/%(USER)s
+export HOME=/home/%(USER)s
 
 cd $HOME
 
