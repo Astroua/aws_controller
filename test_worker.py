@@ -43,7 +43,7 @@ try:
     mess["proc_name"] = proc_name
     mess["bucket"] = proc_name
     mess['key_name'] = "data/test.txt"
-    mess['command'] = ["ls", "/home/ubuntu/data/"]
+    mess['command'] = ["ls /home/ubuntu/data", "ls -la /home/ubuntu/data/"]
     mess['parameters'] = ""
 
     mess = queue.new_message(body=json.dumps(mess))
@@ -69,6 +69,7 @@ try:
         update = inst.update()
         print update
         if update in [u"stopping", u"stopped"]:
+            print("Instance shutting down.")
             break
         sleep(5)
     else:
