@@ -7,7 +7,7 @@ from utils import timestring
 from boto import sqs, ec2, s3
 from boto import Config
 import json
-from time import sleep
+from time import sleep, time
 import os
 
 # Assuming that the testing system has the AWS config already set.
@@ -64,11 +64,17 @@ try:
                   user_data=user_data)
 
     # sleep 1 min
-    sleep(60)
+    t0 = time()
+    while time() < t0 + 60:
+        update = inst.update()
+        print update
+        if update in [u"stopping", u"stopped"]:
+            break
+        sleep(5)
+    else:
+        print("Reached time limit. Terminating after 1 min.")
 
-    if inst.state == u"running":
-        print("Terminating after 1 min.")
-        inst.terminate()
+    inst.terminate()
 
     print("Checking for response message.")
 
