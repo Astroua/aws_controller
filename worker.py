@@ -78,7 +78,9 @@ class Worker(object):
             try:
                 stdout_file = open("data_products/stdout.txt", "a")
                 for cmd in self.command:
-                    proc = Popen(cmd.split(), stdout=stdout_file)
+                    if not isinstance(cmd, list):
+                        cmd = cmd.split()
+                    proc = Popen(cmd, stdout=stdout_file)
                     proc.communicate()
                     stdout_file.flush()
                 stdout_file.close()
