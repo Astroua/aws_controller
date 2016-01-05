@@ -92,6 +92,10 @@ class Worker(object):
                 self.success = False
                 self.message_dict['execute'] = tr.format_exc()
                 self.output_files = []
+                try:
+                    stdout_file.close()
+                except Exception:
+                    pass
 
     def upload_results(self):
 
