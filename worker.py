@@ -77,8 +77,10 @@ class Worker(object):
         if not self.empty_flag:
             try:
                 stdout_file = open("data_products/stdout.txt", "a")
-                proc = Popen(self.command, stdout=stdout_file)
-                proc.communicate()
+                for cmd in self.command:
+                    proc = Popen(cmd.split(), stdout=stdout_file)
+                    proc.communicate()
+                    stdout_file.flush()
                 stdout_file.close()
                 # Check the files in the output folder
                 self.output_files = listdir_fullpath("data_products")
