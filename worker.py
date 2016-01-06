@@ -65,8 +65,7 @@ class Worker(object):
         if not self.empty_flag:
             try:
                 download_from_s3(self.key_name, self.bucket_name,
-                                 aws_access=self.credentials,
-                                 output_dir="data/")
+                                 aws_access=self.credentials)
                 self.message_dict['download_data'] = \
                     "Successfully downloaded data."
             except Exception:
