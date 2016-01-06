@@ -58,9 +58,10 @@ try:
            "REGION": region,
            "KEY": key,
            "SECRET": secret,
-           "RESP_QUEUE_NAME": proc_name + "_response"}
+           "RESP_QUEUE_NAME": proc_name + "_response",
+           "CUSTOM_LINES": ''}
 
-    inst = launch(key_name=None, region=region, image_id="ami-bd8c94dc",
+    inst = launch(key_name=None, region=region, image_id="ami-54869e35",
                   user_data=user_data)
 
     # sleep 1 min
