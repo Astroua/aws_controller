@@ -78,11 +78,7 @@ def upload_to_s3(bucket_name, upload_item,
     else:
         bucket = conn.get_bucket(bucket_name)
 
-    if key_prefix is None:
-        key_name = upload_item.rstrip("/").split("/")[-1]
-    else:
-        key_name = os.path.join(key_prefix,
-                                upload_item.rstrip("/").split("/")[-1])
+    key_name = upload_item.rstrip("/").split("/")[-1]
 
     # Now check if the item to upload is a file or folder
     if os.path.isdir(upload_item):
@@ -95,10 +91,17 @@ def upload_to_s3(bucket_name, upload_item,
                 # the file structure.
                 full_key_path = \
                     source_dir.replace(source_dir.split(key_name)[0], "")
-                full_key_name = os.path.join(full_key_path, filename)
+                if key_prefix is None:
+                    full_key_name = os.path.join(full_key_path, filename)
+                else:
+                    full_key_name = os.path.join(key_prefix, full_key_path,
+                                                 filename)
+
                 auto_multipart_upload(full_filename, bucket, full_key_name,
                                       replace=replace, chunk_size=chunk_size)
     elif os.path.isfile(upload_item):
+        if key_prefix is not None:
+            key_name = os.path.join(key_prefix, key_name)
         auto_multipart_upload(upload_item, bucket, key_name, replace=replace,
                               chunk_size=chunk_size)
     else:
