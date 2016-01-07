@@ -84,7 +84,7 @@ class Worker(object):
                     stdout_file.flush()
                 stdout_file.close()
                 # Check the files in the output folder
-                self.output_files = listdir_fullpath("data_products")
+                self.output_files = listdir_fullpath("/home/ubuntu/data_products/")
                 if len(self.output_files) == 0:
                     raise Exception("No output files found.")
                 self.message_dict['execute'] = "Successfully executed command."
