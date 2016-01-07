@@ -106,6 +106,8 @@ class Worker(object):
             else:
                 try:
                     for out in self.output_files:
+                        if os.path.isdir(out):
+                            out += "/*"
                         upload_to_s3(self.bucket_name, out,
                                      aws_access=self.credentials,
                                      create_bucket=False,
