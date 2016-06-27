@@ -1,0 +1,1 @@
+{"proc_name": "aws_ska_test_worker_20160105201513009046", "messages": {"receive_message": "Successfully read message.", "download_data": "Successfully downloaded data.", "execute": "Successfully executed command.", "upload_results": "Successfully uploaded results."}, "success": true}

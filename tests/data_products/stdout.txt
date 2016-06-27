@@ -1,0 +1,8 @@
+Aegean
+analysis_scripts
+aws_controller
+casa-deploy
+casa-python
+data
+data_products
+miniconda
