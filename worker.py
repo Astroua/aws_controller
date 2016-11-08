@@ -76,10 +76,11 @@ class Worker(object):
         if not self.empty_flag:
             try:
                 stdout_file = open("data_products/stdout.txt", "a")
+                stderr_file = open("data_products/stderr.txt", "a")
                 for cmd in self.command:
                     if not isinstance(cmd, list):
                         cmd = cmd.split()
-                    proc = Popen(cmd, stdout=stdout_file)
+                    proc = Popen(cmd, stdout=stdout_file, stderr=stderr_file)
                     proc.communicate()
                     stdout_file.flush()
                 stdout_file.close()
