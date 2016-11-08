@@ -2,6 +2,7 @@
 
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
+from boto.s3.lifecycle import Lifecycle, Expiration, Rule
 import os
 import math
 import fnmatch
@@ -174,19 +175,7 @@ def download_from_s3(key_name, bucket_name, conn=None,
     '''
 
     # Create S3 connection if none are given.
-    if conn is None:
-        if "aws_access_key_id" in aws_access.keys() and "aws_secret_access_key" in aws_access.keys():
-            conn = S3Connection(**aws_access)
-        elif len(aws_access.keys()) > 0:
-            raise KeyError("aws_access must contain 'aws_access_key_id'"
-                           " and 'aws_secret_access_key'. All other"
-                           " entries are ignored.")
-        else:
-            # Use the AWS Keys saved on your machine.
-            conn = S3Connection()
-    else:
-        if not isinstance(conn, S3Connection):
-            raise TypeError("conn provided is not an S3 Connection.")
+    conn = return_s3_connection(aws_access) if conn is None else conn
 
     if output_dir is None:
         output_dir = ""
@@ -275,3 +264,49 @@ def accumulator(iterable, typeof=str, spacer="/", start_space=0):
         else:
             total += item
         yield total
+
+
+def return_s3_connection(aws_access):
+    '''
+    Return an S3 connection, optionally given the key and secret.
+
+    Parameters
+    ----------
+    aws_access : dict
+        Dictionary containing 'aws_access_access_key' and
+        'aws_secret_access_key'.
+
+    Returns
+    -------
+    conn : boto.s3.connection.S3Connection
+        Connection to S3.
+    '''
+    # Create S3 connection if none are given.
+    if "aws_access_key_id" in aws_access.keys() and "aws_secret_access_key" in aws_access.keys():
+        conn = S3Connection(**aws_access)
+    elif len(aws_access.keys()) > 0:
+        raise KeyError("aws_access must contain 'aws_access_key_id'"
+                       " and 'aws_secret_access_key'. All other"
+                       " entries are ignored.")
+    else:
+        # Use the AWS Keys saved on your machine.
+        conn = S3Connection()
+
+    return conn
+
+
+def set_bucket_lifetime(bucket_name, days=14, aws_access={}, conn=None):
+    '''
+    Set an expiration on a bucket in S3.
+    '''
+
+    conn = return_s3_connection(aws_access) if conn is None else conn
+
+    bucket = conn.get_bucket(bucket_name)
+    expiration = Expiration(days=days)
+    rule = Rule(id='ruleid', prefix='', status='Enabled',
+                expiration=expiration)
+    lifecycle = Lifecycle()
+    lifecycle.append(rule)
+
+    return bucket.configure_lifecycle(lifecycle)
