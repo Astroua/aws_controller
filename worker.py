@@ -84,6 +84,10 @@ class Worker(object):
                     proc.communicate()
                     stdout_file.flush()
                 stdout_file.close()
+                # Put a copy of the parameter file for the job into the
+                # data_products folder.
+                os.system("cp /home/ubuntu/data/params.txt "
+                          "/home/ubuntu/data_products/")
                 # Check the files in the output folder
                 self.output_files = listdir_fullpath("/home/ubuntu/data_products/")
                 if len(self.output_files) == 0:
