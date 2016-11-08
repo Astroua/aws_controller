@@ -32,7 +32,7 @@ work.download_data()
 
 work.execute()
 
-work.upload_results()
+work.upload_results(make_tar=True)
 
 work.send_result_message('%(RESP_QUEUE_NAME)s')
 "

@@ -99,12 +99,21 @@ class Worker(object):
                 except Exception:
                     pass
 
-    def upload_results(self):
+    def upload_results(self, make_tar=False):
 
         if not self.empty_flag:
             if len(self.output_files) == 0:
                 self.message_dict['upload_results'] = "No output files found."
             else:
+                if make_tar:
+                    # Create a tar file and only upload it.
+                    import tarfile
+                    tar = tarfile.open("data_products.tar", "w:")
+                    for name in self.output_files:
+                        tar.add(name)
+                    tar.close()
+                    self.output_files = ["data_products.tar"]
+
                 try:
                     for out in self.output_files:
                         upload_to_s3(self.bucket_name, out,
