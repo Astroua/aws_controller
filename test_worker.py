@@ -17,7 +17,7 @@ try:
 
     # Read in credentials
     config = Config()
-    config.load_credential_file(os.path.join(os.path.expanduser("~"),".aws/credentials"))
+    config.load_credential_file(os.path.expanduser("~/.aws/credentials"))
     info = config.items("default")[2:]
     key = info[0][1]
     secret = info[1][1]
@@ -61,7 +61,7 @@ try:
            "RESP_QUEUE_NAME": proc_name + "_response",
            "CUSTOM_LINES": ''}
 
-    inst = launch(key_name=None, region=region, image_id="ami-54869e35",
+    inst = launch(key_name=None, region=region, image_id="ami-b7fc75d7",
                   user_data=user_data)
 
     # sleep 1 min
