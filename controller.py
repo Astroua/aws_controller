@@ -22,7 +22,7 @@ cd ..
 
 %(CUSTOM_LINES)s
 
-$HOME/miniconda/bin/python -c "from aws_controller.worker import Worker
+$HOME/miniconda2/bin/python -c "from aws_controller.worker import Worker
 
 work = Worker('%(QUEUE_NAME)s', '%(KEY)s', '%(SECRET)s', '%(REGION)s')
 
