@@ -1,3 +1,0 @@
-[submodule "casa-deploy"]
-	path = casa-deploy
-	url = git@github.com:Astroua/casa-deploy.git
